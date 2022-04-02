@@ -1,13 +1,14 @@
 //导入,访问其他库中的API
 //https://dart.cn/samples#imports
 // Importing core libraries
-import 'dart:math';
+import 'dart:io';
+import 'dart:math';//导入的包并未被使用,会警告但不会报错
 
 // Importing libraries from external packages
-//import 'package:test/test.dart';
+import 'package:test/test.dart';
 
 // Importing files
-//import 'path/to/my_other file.dart';
+import 'path/to/my_other file.dart';
 //变量的声明
 //https://dart.cn/samples#variables
 var name = 'Voyager I';
@@ -171,7 +172,7 @@ Stream<String> report(Spacecraft craft, Iterable<String> objects) async* {
 //异常,使用 throw 关键字抛出一个异常：
 //https://dart.cn/samples#exceptions
 class except with Piloted{
- except(){
+ Future<void> excepts() async {
 if (astronauts == 0) {
   throw StateError('No astronauts.');
 }
@@ -181,6 +182,7 @@ try {
     var description = await File('$object.txt').readAsString();
     print(description);
   }
+// ignore: nullable_type_in_catch_clause
 } on IOException catch (e) {
   print('Could not describe object: $e');
 } finally {
