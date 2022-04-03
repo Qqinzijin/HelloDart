@@ -5,10 +5,10 @@ import 'dart:io';
 import 'dart:math';//导入的包并未被使用,会警告但不会报错
 
 // Importing libraries from external packages
-import 'package:test/test.dart';
+//import 'package:test/test.dart';
 
 // Importing files
-import 'path/to/my_other file.dart';
+//import 'path/to/my_other file.dart';
 //变量的声明
 //https://dart.cn/samples#variables
 var name = 'Voyager I';
@@ -195,12 +195,12 @@ void main(List<String> args) {
   print('hello world');
   print('name: $name,year: $year');
   kongzhi();
+  print('year: $year');
   var result = fibonacci(20);
   print('result: $result');
   //可以像下面这样使用 Spacecraft 类
   var voyager = Spacecraft('Voyager I', DateTime(1977, 9, 5));
   voyager.describe();
-
   var voyager3 = Spacecraft.unlaunched('Voyager III');
   voyager3.describe();
 }
