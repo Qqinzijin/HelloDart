@@ -1,44 +1,29 @@
-// 命令行程序 （https://dart.dev/tutorials/server/cmdline）
-
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:args/args.dart';
-
 const lineNumber = 'line-number';
 
-void main(List<String> args) {
+void main(List<String> arguments) {
   exitCode = 0;
   final parser = ArgParser()..addFlag(lineNumber, negatable: false, abbr: 'n');
 
-  ArgResults argResults = parser.parse(args);
-
-  final paths = argResults.rest; // 剩余的命令行参数
+  ArgResults argResults = parser.parse(arguments);
+  // 除了上面register的lineNumber的flag外，剩余的参数都作为路径
+  final paths = argResults.rest;
 
   dcat(paths, showLineNumbers: argResults[lineNumber] as bool);
 }
 
 Future<void> dcat(List<String> paths, {bool showLineNumbers = false}) async {
   if (paths.isEmpty) {
-    print('type exit to quit.');
-    while (true) {
-      stdout.write(
-          '> '); // 这样就不换行了 (https://stackoverflow.com/questions/14073217/print-without-a-newline-in-dart)
-      String? line = stdin.readLineSync();
-      print('${line}\n');
-
-      if (line?.toLowerCase() == 'exit') {
-        print('bye.');
-        break;
-      }
-    }
+    await stdin.pipe(stdout);
   } else {
+    // 如果有多个路径，则按照顺序依次输出
     for (final path in paths) {
       var lineNumber = 1;
       final lines = utf8.decoder
           .bind(File(path).openRead())
-          .transform(const LineSplitter());
-
+          .transform(const LineSplitter()); // 将文件转换为行
       try {
         await for (final line in lines) {
           if (showLineNumbers) {
@@ -55,7 +40,7 @@ Future<void> dcat(List<String> paths, {bool showLineNumbers = false}) async {
 
 Future<void> _handleError(String path) async {
   if (await FileSystemEntity.isDirectory(path)) {
-    stderr.writeln('Error: $path is a directory.');
+    stderr.writeln('error: $path is a directory');
   } else {
     exitCode = 2;
   }
